@@ -47,7 +47,6 @@ namespace NoteApp
                 fileStream.Write(iv, 0, iv.Length);
                 fileStream.Flush();
 
-                // Производим деривацию ключа и настраиваем AES для шифрования
                 var key = DeriveKey(password, salt, tmpAes.KeySize / 8);
 
                 var aes = Aes.Create();
@@ -59,30 +58,23 @@ namespace NoteApp
 
                 var encryptor = aes.CreateEncryptor();
 
-                // CryptoStream поверх fileStream. leaveOpen: false — при закрытии cryptoStream закроются и fileStream.
                 var cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write, leaveOpen: false);
 
                 current = cryptoStream;
-                // Не забываем: если compress==true, то над cryptoStream мы положим GZip (внешний)
+                
             }
 
             if (compress)
             {
-                // GZip поверх текущего (либо над cryptoStream, либо прямо над fileStream если encrypt==false).
-                // leaveOpen: false -> закрытие GZip закроет текущ (crypto/file) и тот закроет дальше.
+                .
                 current = new GZipStream(current, CompressionLevel.Optimal, leaveOpen: false);
             }
 
-            // Если ни compress ни encrypt — current == fileStream.
 
-            return current; // внешний поток для записи plain-text
+            return current; 
         }
 
-        /// <summary>
-        /// Открыть поток для чтения. Возвращаемый поток — внешний поток, из которого читают plain-text.
-        /// Порядок чтения: открыть FileStream, прочитать header (salt+iv) если encrypt, создать CryptoStream (decrypt) на fileStream,
-        /// затем если compress — создать GZipStream(Decompress) поверх CryptoStream.
-        /// </summary>
+        
         public static Stream OpenReadDecorated(string path, bool compress, bool encrypt, string password)
         {
             if (encrypt && string.IsNullOrEmpty(password))
