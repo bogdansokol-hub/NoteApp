@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    x:Class="NoteApp.MainPage"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Note - Plik">
+
+    <ContentPage.ToolbarItems>
+        <!-- Menu "Plik" w toolbarze (mobilnie / desktopowo) -->
+        <ToolbarItem Text="Odczytaj" Order="Primary" Priority="0" Clicked="OnReadClicked"/>
+        <ToolbarItem Text="Zapisz" Order="Primary" Priority="1" Clicked="OnSaveClicked"/>
+        <ToolbarItem Text="Koniec" Order="Primary" Priority="2" Clicked="OnExitClicked"/>
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="12" Spacing="12">
+
+            <HorizontalStackLayout Spacing="8" VerticalOptions="Start">
+                <Entry x:Name="PathEntry"
+                       Placeholder="Ścieżka do pliku..."
+                       HorizontalOptions="Fill" />
+                <Button Text="Przeglądaj" Clicked="OnBrowseClicked"/>
+            </HorizontalStackLayout>
+
+            <Label Text="Opcje przetwarzania (wybierz dowolne):" FontAttributes="Bold"/>
+
+            <HorizontalStackLayout Spacing="12">
+                <CheckBox x:Name="CompressCheck" />
+                <Label Text="Kompresja (GZip)" VerticalOptions="Center"/>
+                <CheckBox x:Name="EncryptCheck" />
+                <Label Text="Szyfrowanie (AES)" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="8">
+                <Label Text="Hasło (dla AES):" VerticalOptions="Center"/>
+                <Entry x:Name="PasswordEntry" IsPassword="True" HorizontalOptions="Fill"/>
+            </HorizontalStackLayout>
+
+            <Label Text="Zawartość pliku:" FontAttributes="Bold"/>
+
+            <Editor x:Name="ContentEditor"
+                    AutoSize="TextChanges"
+                    HeightRequest="400"
+                    Placeholder="Wpisz tekst tutaj..." />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
